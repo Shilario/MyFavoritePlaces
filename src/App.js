@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Map from "./Map";
+import SideNavBar from "./SideNavBar";
 
 class App extends Component {
   render() {
+    const mapOptions = {
+      center: { lat: 41.0082, lng: 28.9784 },
+      zoom: 8
+    };
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div id="main">
+        <div id="sidebar-container">
+          <SideNavBar/>
+        </div>
+        <div id="map-container">
+          <Map
+            id='map'
+            options= {mapOptions}
+            onMapLoad={ map => {
+              const marker = new window.google.maps.Marker({
+                position: { lat: 41.0082, lng: 28.9784 },
+                map: map,
+                title: 'My Map'
+              });
+            }}
+          />
+        </div>
       </div>
     );
   }
