@@ -2,43 +2,28 @@ import React, { Component } from 'react';
 import './App.css';
 import Map from "./Map";
 import SideNavBar from "./SideNavBar";
+import {locations} from "./utils/Places";
+import escapeRegExp from 'escape-string-regexp';
 
 class App extends Component {
-  state = {
-    locations: [
-      {title: 'Cibao International Airport', location: {lat: 19.403653385, lng: -70.6028109221}},
-      {title: 'Fortaleza San Luis', location: {lat: 19.4422796642, lng: -70.7016891932}},
-      {title: 'Punta Cana', location: {lat: 18.58182, lng: -68.40431}},
-      {title: 'Cordillera Septentrional', location: {lat: 19.614, lng: -70.729}},
-      {title: 'Alcázar de Colón', location: {lat: 18.473164774, lng: -69.876329828}},
-      {title: 'Fortaleza Ozama', location: {lat: 18.4732, lng: -69.88171}}
-    ],
-    markers: []
+
+  constructor(props) {
+    super(props);
+    window.self = this;
   }
 
-  addMarkersToMap(locations, map){
-    for (let i = 0; i < locations.length; i++) {
-      // Get the position from the location array.
-      let position = locations[i].location,
-        title = locations[i].title,
-        marker = new window.google.maps.Marker({
-          position: position,
-          title: title,
-          map,
-          animation: window.google.maps.Animation.DROP,
-          id: i
-        });
-      // Push the marker to our array of markers.
-      this.state.markers.push(marker);
-      // Create an onclick event to open the large infowindow at each marker.
-      // marker.addListener('click', function() {
-      //   populateInfoWindow(this, largeInfowindow);
-      // });
-      // Two event listeners - one for mouseover, one for mouseout,
-      // to change the colors back and forth.
-    }
-    return this.state.markers;
+  state = {
+    locations
   }
+
+  filterLocations = (name) => {
+    const match = new RegExp(escapeRegExp(name), 'i');
+
+    let filtered = locations.filter(place => match.test(place.title));
+    this.setState({
+      locations: filtered
+    })
+  };
 
   render() {
     const mapOptions = {
@@ -49,13 +34,16 @@ class App extends Component {
     return (
       <div id="main">
         <div id="sidebar-container">
-          <SideNavBar/>
+          <SideNavBar
+            locations={this.state.locations}
+            onFilteredPlace={this.filterLocations}
+          />
         </div>
         <div id="map-container">
           <Map
             id='map'
             options= {mapOptions}
-            onMapLoad={ map =>  this.addMarkersToMap(this.state.locations, map) }
+            locations={this.state.locations}
           />
         </div>
       </div>
