@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import './Map.css';
+import $ from 'jquery';
+
+window.jQuery = $;
+window.$ = $;
 
 class Map extends Component {
   constructor() {
@@ -31,11 +35,29 @@ class Map extends Component {
       // Push the marker to our array of markers.
       markers.push(marker);
       // Create an onclick event to open the large infowindow at each marker.
-      // marker.addListener('click', function() {
-      //   populateInfoWindow(this, largeInfowindow);
-      // });
-      // Two event listeners - one for mouseover, one for mouseout,
-      // to change the colors back and forth.
+      const infoWindow = new window.google.maps.InfoWindow();
+
+      marker.addListener('click', function() {
+        infoWindow.marker = marker;
+
+        $.ajax({
+          url: '//en.wikipedia.org/w/api.php',
+          data: { action: 'opensearch', list: 'search', search: marker.title, format: 'json' },
+          dataType: 'jsonp',
+          success: function (results) {
+            infoWindow.setContent('<div>' + results[2] + '</div>');
+            infoWindow.open(map, marker);
+          },
+          error: function (err) {
+            console.log('Error', err)
+          }
+        });
+
+        // Make sure the marker property is cleared if the infowindow is closed.
+        infoWindow.addListener('closeclick', function () {
+          infoWindow.setMarker = null;
+        });
+      });
     }
     return markers;
   }
@@ -65,7 +87,7 @@ class Map extends Component {
 
   render() {
     return (
-      <div id={this.props.id} className="map"/>
+      <div id={this.props.id} className="map" aria-label='Google Maps'/>
     );
   }
 }

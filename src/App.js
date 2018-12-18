@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Map from "./Map";
 import SideNavBar from "./SideNavBar";
-import {locations} from "./utils/Places";
+import { locations } from "./utils/Places";
 import escapeRegExp from 'escape-string-regexp';
 
 class App extends Component {
@@ -14,6 +14,10 @@ class App extends Component {
 
   state = {
     locations
+  }
+
+  componentDidMount() {
+    document.title = 'My favorite places in the Dominican Republic'
   }
 
   filterLocations = (name) => {
