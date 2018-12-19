@@ -20,6 +20,7 @@ class App extends Component {
     document.title = 'My favorite places in the Dominican Republic'
   }
 
+  // Filter the locations when writing on the search box or clicking on one of the list items.
   filterLocations = (name) => {
     const match = new RegExp(escapeRegExp(name), 'i');
 
@@ -41,6 +42,7 @@ class App extends Component {
           <SideNavBar
             locations={this.state.locations}
             onFilteredPlace={this.filterLocations}
+            tabindex={0}
           />
         </div>
         <div id="map-container">
@@ -48,6 +50,7 @@ class App extends Component {
             id='map'
             options= {mapOptions}
             locations={this.state.locations}
+            tabindex={0}
           />
         </div>
       </div>

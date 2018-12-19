@@ -18,7 +18,7 @@ class Map extends Component {
     this.addMarkersToMap(this.props.locations, map)
   }
 
-  // Adds the marker to the map
+  // Add the markers to the map
   addMarkersToMap(locations, map){
     const markers = [];
     for (let i = 0; i < locations.length; i++) {
@@ -34,12 +34,14 @@ class Map extends Component {
         });
       // Push the marker to our array of markers.
       markers.push(marker);
-      // Create an onclick event to open the large infowindow at each marker.
+
       const infoWindow = new window.google.maps.InfoWindow();
 
+      // Create an onclick event to open  infowindow at each marker.
       marker.addListener('click', function() {
         infoWindow.marker = marker;
 
+        // Async call to wikipedia api to get information of the places when click a marker
         $.ajax({
           url: '//en.wikipedia.org/w/api.php',
           data: { action: 'opensearch', list: 'search', search: marker.title, format: 'json' },
@@ -64,15 +66,16 @@ class Map extends Component {
 
   componentDidMount() {
     if (!window.google) {
+      // Create script tag to include google maps api
       const scriptTag = document.createElement('script');
       scriptTag.type = 'text/javascript';
       scriptTag.src = `https://maps.google.com/maps/api/js?key=AIzaSyBkSEwnoelnECMgtf-6Dt18lcw0KzTmgis&callback=createMap`;
       scriptTag.async = true;
       const x = document.getElementsByTagName('script')[0];
       x.parentNode.insertBefore(scriptTag, x);
-      // Below is important.
+
       //We cannot access google.maps until it's finished loading
-      scriptTag.addEventListener('load', element => {
+      scriptTag.addEventListener('load', () => {
         this.createMap()
       })
     } else {

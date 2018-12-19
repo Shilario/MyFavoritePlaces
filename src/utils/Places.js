@@ -1,3 +1,4 @@
+// Default list of places in the Dominican Republic
 export const locations = [
   {title: 'Cibao International Airport', location: {lat: 19.403653385, lng: -70.6028109221}},
   {title: 'Fortaleza San Luis', location: {lat: 19.4422796642, lng: -70.7016891932}},

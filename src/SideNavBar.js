@@ -47,7 +47,7 @@ class SideNavBar extends Component {
           <ul name="List of my favorite places in the Dominican Republic">
             {
               locations.map(location => (
-                <li key={location.title} className='place'>
+                <li key={location.title} className='place' tabIndex={0}>
                   <a className='place-item' onClick={this.pickPlace} role='button'>{location.title}</a>
                 </li>
               ))}
