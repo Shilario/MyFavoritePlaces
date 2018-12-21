@@ -9,6 +9,7 @@ class Map extends Component {
   constructor() {
     super();
     this.createMap = this.createMap.bind(this);
+    window.createMap = this.createMap;
   }
 
   createMap() {
@@ -46,6 +47,7 @@ class Map extends Component {
           url: '//en.wikipedia.org/w/api.php',
           data: { action: 'opensearch', list: 'search', search: marker.title, format: 'json' },
           dataType: 'jsonp',
+          crossDomain: true,
           success: function (results) {
             infoWindow.setContent('<div>' + results[2] + '</div>');
             infoWindow.open(map, marker);
@@ -74,16 +76,17 @@ class Map extends Component {
       const x = document.getElementsByTagName('script')[0];
       x.parentNode.insertBefore(scriptTag, x);
 
+      const self = this;
       //We cannot access google.maps until it's finished loading
       scriptTag.addEventListener('load', () => {
-        this.createMap()
+        self.createMap()
       })
     } else {
       this.createMap()
     }
   }
 
-  getSnapshotBeforeUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     this.createMap();
     return null;
   }

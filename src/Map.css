@@ -74,6 +74,12 @@
     tab-index: 999;
 }
 
+.showing-all {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
 @media only screen and (max-width: 768px) {
     .search-locations {
         width: 105px;

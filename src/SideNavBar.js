@@ -6,6 +6,7 @@ class SideNavBar extends Component {
   constructor(){
     super();
     this.pickPlace = this.pickPlace.bind(this);
+    this.clearQuery = this.clearQuery.bind(this);
   }
 
   state = {
@@ -23,6 +24,10 @@ class SideNavBar extends Component {
     this.setState({ query: filterPlace.trim() })
 
     this.props.onFilteredPlace(filterPlace)
+  }
+
+  clearQuery() {
+    this.props.onFilteredPlace('all')
   }
 
   render() {
@@ -44,15 +49,20 @@ class SideNavBar extends Component {
           />
         </div>
         <div className="list-places">
-          <ul name="List of my favorite places in the Dominican Republic">
+          <ul name="List of my favorite places in the Dominican Republic">s
             {
               locations.map(location => (
                 <li key={location.title} className='place' tabIndex={0}>
-                  <a className='place-item' onClick={this.pickPlace} role='button'>{location.title}</a>
+                  <label className='place-item' onClick={this.pickPlace} role='button'>{location.title}</label>
                 </li>
               ))}
           </ul>
         </div>
+        {locations.length !== 14 && (
+          <div className='showing-all'>
+            <button onClick={this.clearQuery}>Show all</button>
+          </div>
+        )}
       </div>
     )
   }

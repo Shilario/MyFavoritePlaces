@@ -40,7 +40,7 @@ this.addEventListener('fetch', function(event) {
       // Clone the request
       let cloneRequest = event.request.clone();
 
-      return fetch(cloneRequest).then(
+      return fetch(cloneRequest, { mode: "no-cors" }).then(
         function (response) {
           // Checks if the received response is a valid one
           if (!response || response.status != 200 || response.type !== 'basic') {

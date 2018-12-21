@@ -22,12 +22,18 @@ class App extends Component {
 
   // Filter the locations when writing on the search box or clicking on one of the list items.
   filterLocations = (name) => {
-    const match = new RegExp(escapeRegExp(name), 'i');
+    if(name !== 'all') {
+      const match = new RegExp(escapeRegExp(name), 'i');
 
-    let filtered = locations.filter(place => match.test(place.title));
-    this.setState({
-      locations: filtered
-    })
+      let filtered = locations.filter(place => match.test(place.title));
+      this.setState({
+        locations: filtered
+      })
+    } else {
+      this.setState({
+        locations
+      })
+    }
   };
 
   render() {
